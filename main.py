@@ -4,7 +4,8 @@ import requests
 import random
 import string
 import os
-
+# Importar la librería discord-webhook
+from discord_webhook import DiscordWebhook
 
 class SapphireGen:
     def __init__(this, code_type: str, prox=None, codes=None):
@@ -15,6 +16,8 @@ class SapphireGen:
         this.prox_api = (
             "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt"
         )
+        # Crear un objeto DiscordWebhook con la URL de tu webhook
+        this.webhook = DiscordWebhook(url="https://discord.com/api/webhooks/1169722670833750016/j2cjvJ1E3ipQdtIau60IPRc6R9DFrfUCVg48QjJSbi1SZ0fIsebnt-t7eMlMJIDt2PG2")
 
     def __proxies__(this):
         req = this.session.get(this.prox_api).text
@@ -67,6 +70,8 @@ class SapphireGen:
                         f"{Fore.GREEN}[{strftime('%H:%M', localtime())}] discord.gift/{code} | valid"
                     )
                     open("./data/valid.txt", "a").write(f"{code}\n")
+                    # Enviar un mensaje a la webhook con el código válido
+                    this.webhook.send(content=f"discord.gift/{code} | válido")
                 if req == 404:
                     print(
                         f"{Fore.RED}[{strftime('%H:%M', localtime())}] discord.gift/{code} | invalid"
